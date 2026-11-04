@@ -1,0 +1,63 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# ── En-têtes de sécurité ──────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(self)"
+
+# ── Fonctions du serveur : /api/auth, /api/db ─────────────────────────
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true
+
+# ── Fichiers internes : jamais accessibles depuis Internet ────────────
+[[redirects]]
+  from = "/netlify/*"
+  to = "/index.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/supabase-functions/*"
+  to = "/index.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/outils/*"
+  to = "/index.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/*.sql"
+  to = "/index.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/*.md"
+  to = "/index.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/test_register.html"
+  to = "/index.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/netlify.toml"
+  to = "/index.html"
+  status = 404
+  force = true
+
+# ── Site : toutes les autres adresses renvoient vers la page d'accueil ─
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
